@@ -122,6 +122,7 @@ export default function Home() {
         justifyContent="flex-end"
         alignItems="flex-start"
         p={5}
+        m={8}
       >
         <Typography
           sx={{ fontWeight: 700, fontSize: "20px", color: "#504E4E" }}

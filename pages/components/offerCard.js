@@ -30,7 +30,7 @@ export default function OfferCard() {
     <>
       <Card
         sx={{
-          maxWidth: 320,
+          maxWidth: 350,
           mt: 4,
           boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
           borderRadius: "15px",
