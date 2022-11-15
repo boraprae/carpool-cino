@@ -57,7 +57,7 @@ export default function Home() {
             fontSize: "64px",
             position: "absolute",
             left: "40%",
-            top: "20%",
+            top: "15%",
           }}
         >
           Carpool Cino
@@ -69,7 +69,7 @@ export default function Home() {
             fontSize: "24px",
             position: "absolute",
             left: "35%",
-            top: "30%",
+            top: "25%",
           }}
         >
           Sharing of car journeys and save your money here!
@@ -81,7 +81,7 @@ export default function Home() {
             borderRadius: "5px",
             position: "absolute",
             left: "30%",
-            top: "43%",
+            top: "35%",
           }}
         >
           <Grid
