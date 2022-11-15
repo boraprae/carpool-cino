@@ -19,6 +19,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
+import OfferCard from "./components/offerCard";
+
 const ColorButton = styled(Button)(({ theme }) => ({
   color: "#FFFFFF",
   boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
@@ -113,7 +115,31 @@ export default function Home() {
           </Grid>
         </Card>
       </Stack>
-     
+
+      <Grid
+        container
+        direction="column"
+        justifyContent="flex-end"
+        alignItems="flex-start"
+        p={5}
+      >
+        <Typography
+          sx={{ fontWeight: 700, fontSize: "20px", color: "#504E4E" }}
+        >
+          Offer Nearby
+        </Typography>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <OfferCard />
+          <OfferCard />
+          <OfferCard />
+          <OfferCard />
+        </Grid>
+      </Grid>
     </>
   );
 }
