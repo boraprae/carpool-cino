@@ -41,7 +41,7 @@ function Navbar() {
     //   <Link href="/"> Home</Link>
     //   <Link href="/about"> About</Link>
     // </nav>
-    <AppBar position="static" sx={{ background: "#CC8D48" }}>
+    <AppBar position="fixed" sx={{ background: "#CC8D48" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Grid
