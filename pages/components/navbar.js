@@ -74,7 +74,13 @@ function Navbar() {
           >
             <Button
               variant="text"
-              sx={{ color: "white", fontWeight: 700, fontSize: "16px" }}
+              sx={{
+                color: "white",
+                fontWeight: 700,
+                fontSize: "16px",
+                textTransform: "capitalize",
+                mr: 2
+              }}
             >
               Sign Up
             </Button>
@@ -86,6 +92,7 @@ function Navbar() {
                 fontSize: "16px",
                 borderRadius: "15px",
                 border: "1px solid #FFFFFF",
+                textTransform: "capitalize",
               }}
             >
               Sign In
