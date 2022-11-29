@@ -1,7 +1,10 @@
+import { AppBar } from "@mui/material";
+import Sidebar from "./components/sidebar";
+
 export default function carPoolOffer() {
-    return (
-      <div>
-       <h1>Detail</h1>
-      </div>
-    )
-  }
+  return (
+    <>
+      <Sidebar />
+    </>
+  );
+}

@@ -141,7 +141,7 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="fixed" sx={{ background: "#CC8D48" }}>
+    <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 , background: "#CC8D48"}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Grid
