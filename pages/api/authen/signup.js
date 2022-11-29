@@ -26,9 +26,9 @@ export default async function handler(req, res) {
                 //hash pass
                 const hash = await bcrypt.hash(pass, 10);
 
-                const sql = "INSERT INTO user( user_name , user_password , user_phone , user_email ,user_gender) VALUES(?,?,?,?,?)";
+                const sql = "INSERT INTO user( user_name , user_password , user_phone , user_email , user_BirthDay ,user_gender) VALUES(?,?,?,?,?,?)";
                 //user data to database
-                const result = await pool.query(sql, [name, hash, phone, email, gender]);
+                const result = await pool.query(sql, [name, hash, phone, email, BirthDay, gender]);
 
                 return res.send("ok");
             }

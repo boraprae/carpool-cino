@@ -116,15 +116,11 @@ function Navbar() {
         }
 
         let bodyContent = JSON.stringify({
-          "name": fullname,
-          "pass": password,
-          "phone": phoneNum,
           "email": email,
-          "BirthDay": dateValue,
-          "gender": gender
+          "password": password,
         });
 
-        let response = await fetch("http://localhost:3000/api/authen/login.js", {
+        let response = await fetch("http://localhost:3000/api/authen/login", {
           method: "POST",
           body: bodyContent,
           headers: headersList
@@ -135,7 +131,7 @@ function Navbar() {
           console.log(data);
           handleClose();
         } else {
-          throw Error("Sign Up Error");
+          throw Error("Login Error");
         }
 
       } catch (error) {

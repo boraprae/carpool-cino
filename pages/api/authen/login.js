@@ -6,7 +6,7 @@ export default async function handler(req, res) {
         const email = req.body.email;
         const raw_pass = req.body.password;
 
-        // console.log(email, raw_pass);
+        console.log(email, raw_pass);
 
         try {
             // query user info from DB
