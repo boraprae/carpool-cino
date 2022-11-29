@@ -25,11 +25,10 @@ const CssTextField = styled(TextField)({
   },
 });
 
-export default function TextFieldForm({ placeholderText }) {
+export default function TextFieldForm() {
   return (
     <>
       <CssTextField
-        placeholder={placeholderText}
         id="custom-css-outlined-input"
       />
     </>
