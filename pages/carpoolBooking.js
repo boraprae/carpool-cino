@@ -2,6 +2,7 @@ import { AppBar, Typography, Button } from "@mui/material";
 import Sidebar from "./components/sidebar";
 import styles from "../styles/Home.module.css";
 import CreateCarpoolCard from "./components/createCarpoolCard";
+import MyBookingCard from "./components/myBookingCard";
 
 export default function carPoolBooking() {
   return (
@@ -15,8 +16,10 @@ export default function carPoolBooking() {
           color: "#504E4E",
         }}
       >
-        My Booking
+        My Carpool Booking
       </Typography>
+      <MyBookingCard/>
+      <MyBookingCard/>
     </main>
   );
 }
