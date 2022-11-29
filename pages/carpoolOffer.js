@@ -2,8 +2,11 @@ import { AppBar, Typography, Button } from "@mui/material";
 import Sidebar from "./components/sidebar";
 import styles from "../styles/Home.module.css";
 import CreateCarpoolCard from "./components/createCarpoolCard";
+import * as React from "react";
 
 export default function carPoolOffer() {
+   const [carpoolOffer, setCarpoolOffer] = React.useState([]);
+
   return (
     <main className={styles.main}>
       <Sidebar />
