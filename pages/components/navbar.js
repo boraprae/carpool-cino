@@ -28,6 +28,13 @@ function Navbar() {
     setOpenSignUp(true);
   };
   const handleCloseSignUp = () => {
+    setFullName("");
+    setPhoneNum("");
+    setConPassword("");
+    setDateValue("");
+    setGender("");
+    setEmail("");
+    setPassword("");
     setOpenSignUp(false);
   };
 
@@ -37,6 +44,14 @@ function Navbar() {
     setOpen(true);
   };
   const handleClose = () => {
+
+    setFullName("");
+    setPhoneNum("");
+    setConPassword("");
+    setDateValue("");
+    setGender("");
+    setEmail("");
+    setPassword("");
     setOpen(false);
   };
   //Sign Up value
@@ -89,29 +104,111 @@ function Navbar() {
   };
 
   //!Sign in function here!
-  const submitLoginForm = () => {
+  const submitLoginForm = async () => {
     console.log(email + " " + password);
-    handleClose();
+
+    if (email != "" && password != "") {
+      try {
+
+        let headersList = {
+          "Accept": "*/*",
+          "Content-Type": "application/json"
+        }
+
+        let bodyContent = JSON.stringify({
+          "name": fullname,
+          "pass": password,
+          "phone": phoneNum,
+          "email": email,
+          "BirthDay": dateValue,
+          "gender": gender
+        });
+
+        let response = await fetch("http://localhost:3000/api/authen/login.js", {
+          method: "POST",
+          body: bodyContent,
+          headers: headersList
+        });
+
+        if (response.ok) {
+          let data = await response.text();
+          console.log(data);
+          handleClose();
+        } else {
+          throw Error("Sign Up Error");
+        }
+
+      } catch (error) {
+        console.error(error.message);
+        //     res.status(500).send(error.message);
+      }
+    }
   };
 
   //!Sign Up function here!
-  const submitSignUpForm = () => {
+  const submitSignUpForm = async () => {
     console.log(
       email +
-        " " +
-        password +
-        "Name: " +
-        fullname +
-        "Confirmed password: " +
-        conPassword +
-        "Date of birth: " +
-        dateValue +
-        "Phone Number: " +
-        phoneNum +
-        "Gender: " +
-        gender
+      " " +
+      password +
+      "Name: " +
+      fullname +
+      "Confirmed password: " +
+      conPassword +
+      "Date of birth: " +
+      dateValue +
+      "Phone Number: " +
+      phoneNum +
+      "Gender: " +
+      gender
     );
-    handleCloseSignUp();
+
+    // let headersList = {
+    //   "Accept": "*/*",
+    // }
+
+    if (password == conPassword) {
+      if (email != "" && password != "" && fullname != "" && password != "" && phoneNum != "") {
+        try {
+
+          let headersList = {
+            "Accept": "*/*",
+            "Content-Type": "application/json"
+          }
+
+
+          let bodyContent = JSON.stringify({
+            "name": fullname,
+            "pass": password,
+            "phone": phoneNum,
+            "email": email,
+            "BirthDay": dateValue,
+            "gender": gender
+          });
+
+          let response = await fetch("http://localhost:3000/api/authen/signup", {
+            method: "POST",
+            body: bodyContent,
+            headers: headersList
+          });
+
+          if (response.ok) {
+            let data = await response.text();
+            console.log(data);
+            handleCloseSignUp();
+          } else {
+            throw Error("Sign Up Error");
+          }
+
+        } catch (error) {
+          console.error(error.message);
+          //     res.status(500).send(error.message);
+        }
+      }
+
+    }
+
+
   };
 
   const ColorButton = styled(Button)(({ theme }) => ({

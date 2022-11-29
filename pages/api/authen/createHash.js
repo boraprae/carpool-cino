@@ -1,4 +1,4 @@
-//http://localhost:3000/api/authen/create?password=1111
+//http://localhost:3000/api/authen/createHash?password=1111
 import bcrypt from "bcrypt";
 
 export default async function handler(req, res) {
