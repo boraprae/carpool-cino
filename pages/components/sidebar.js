@@ -13,10 +13,14 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import { useRouter } from "next/router";
 
 const drawerWidth = 240;
 
 export default function Sidebar() {
+  const router = useRouter();
+  const myCarpoolPath = ["/carpoolBooking", "/carpoolOffer"];
+  const myCarPath = ["/carRegister", "/drivingHistory"];
   return (
     <>
       <Drawer
@@ -46,7 +50,9 @@ export default function Sidebar() {
           <List>
             {["Carpool Booking", "Carpool Offers"].map((text, index) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton>
+                <ListItemButton
+                  onClick={() => router.push(myCarpoolPath[index])}
+                >
                   <ListItemText primary={text} />
                 </ListItemButton>
               </ListItem>
@@ -64,7 +70,7 @@ export default function Sidebar() {
             My Carpool
           </Typography>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => router.push("/editProfileInfo")}>
               <ListItemText primary={"Edit Profile Information"} />
             </ListItemButton>
           </ListItem>
@@ -82,7 +88,7 @@ export default function Sidebar() {
           <List>
             {["Car Register", "Driving History "].map((text, index) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton>
+                <ListItemButton onClick={() => router.push(myCarPath[index])}>
                   <ListItemText primary={text} />
                 </ListItemButton>
               </ListItem>
