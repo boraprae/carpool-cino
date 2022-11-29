@@ -3,15 +3,8 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Grid from "@mui/material/Grid";
 import Toolbar from "@mui/material/Toolbar";
-// import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-// import Menu from "@mui/material/Menu";
-// import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-// import Avatar from "@mui/material/Avatar";
-// import Tooltip from "@mui/material/Tooltip";
-// import MenuItem from "@mui/material/MenuItem";
-// import AdbIcon from "@mui/icons-material/Adb";
 import ToysIcon from "@mui/icons-material/Toys";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -20,8 +13,24 @@ import TextField from "@mui/material/TextField";
 import TextFieldForm from "./textfiledForm";
 import { styled } from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
-
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import MenuItem from "@mui/material/MenuItem";
 function Navbar() {
+  //modal sign up action
+  const [openSignUp, setOpenSignUp] = React.useState(false);
+  const handleOpenSignUp = () => {
+    setOpenSignUp(true);
+  };
+  const handleCloseSignUp = () => {
+    setOpenSignUp(false);
+  };
+
   //modal sign In action
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
@@ -30,6 +39,44 @@ function Navbar() {
   const handleClose = () => {
     setOpen(false);
   };
+  //Sign Up value
+  const [emailSignUp, setEmailSignUp] = React.useState("");
+  const [passwordSignUp, setPasswordSignUp] = React.useState("");
+  const [fullname, setFullName] = React.useState("");
+  const [phoneNum, setPhoneNum] = React.useState("");
+  const [conPassword, setConPassword] = React.useState("");
+  //Date Picker
+  const [dateValue, setDateValue] = React.useState(dayjs());
+
+  const handleChange = (newValue) => {
+    setDateValue(newValue);
+  };
+  const changePhoneNum = (event) => {
+    setPhoneNum(event.target.value);
+  };
+  const changeFullName = (event) => {
+    setFullName(event.target.value);
+  };
+  const changeConPassword = (event) => {
+    setConPassword(event.target.value);
+  };
+  //Gender selector
+  const [gender, setGender] = React.useState("Male");
+  const genders = [
+    {
+      value: "Male",
+      label: "Male",
+    },
+    {
+      value: "Female",
+      label: "Female",
+    },
+  ];
+
+  const handleChangeGender = (event) => {
+    setGender(event.target.value);
+  };
+
   //Sign in value
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -41,10 +88,30 @@ function Navbar() {
     setPassword(event.target.value);
   };
 
-  //Sign in function here
+  //!Sign in function here!
   const submitLoginForm = () => {
     console.log(email + " " + password);
     handleClose();
+  };
+
+  //!Sign Up function here!
+  const submitSignUpForm = () => {
+    console.log(
+      email +
+        " " +
+        password +
+        "Name: " +
+        fullname +
+        "Confirmed password: " +
+        conPassword +
+        "Date of birth: " +
+        dateValue +
+        "Phone Number: " +
+        phoneNum +
+        "Gender: " +
+        gender
+    );
+    handleCloseSignUp();
   };
 
   const ColorButton = styled(Button)(({ theme }) => ({
@@ -74,10 +141,6 @@ function Navbar() {
   };
 
   return (
-    // <nav>
-    //   <Link href="/"> Home</Link>
-    //   <Link href="/about"> About</Link>
-    // </nav>
     <AppBar position="fixed" sx={{ background: "#CC8D48" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -110,7 +173,7 @@ function Navbar() {
             alignItems="center"
           >
             <Button
-              onClick={handleOpen}
+              onClick={handleOpenSignUp}
               variant="text"
               sx={{
                 color: "white",
@@ -136,7 +199,7 @@ function Navbar() {
             >
               Sign In
             </Button>
-            {/* //! Modal for Sign In */}
+            {/* //* Modal for Sign In */}
             <Modal
               open={open}
               onClose={handleClose}
@@ -146,39 +209,27 @@ function Navbar() {
               <Box sx={{ ...style, width: 400 }}>
                 <h2 id="parent-modal-title">Sign In</h2>
                 <Divider />
-                <Typography
-                  sx={{
-                    fontWeight: 700,
-                    fontSize: "18px",
-                    color: "#504E4E",
-                    mt: 2,
-                    mb: 1,
-                  }}
-                >
-                  Email
-                </Typography>
-                <TextFieldForm
-                  placeholderText={"example@sample.com"}
+
+                <TextField
+                  id="standard-email-input"
+                  label="Email"
+                  variant="standard"
                   onChange={changeEmail}
                   value={email}
+                  placeholderText={"example@sample.com"}
+                  sx={{ mt: "10px", mb: "5px" }}
                 />
-                <Typography
-                  sx={{
-                    fontWeight: 700,
-                    fontSize: "18px",
-                    color: "#504E4E",
-                    mt: 2,
-                    mb: 1,
-                  }}
-                >
-                  Password
-                </Typography>
-                <TextFieldForm
-                  placeholderText={"******"}
-                  sx={{ mb: 2 }}
+
+                <TextField
+                  id="standard-password-input"
+                  label="Password"
+                  variant="standard"
                   onChange={changePassword}
                   value={password}
+                  placeholderText={"******"}
+                  sx={{ mt: "10px", mb: "25px" }}
                 />
+
                 <Divider />
                 <Grid
                   container
@@ -195,6 +246,7 @@ function Navbar() {
                       height: "50px",
                       mr: 1,
                     }}
+                    onClick={handleClose}
                   >
                     Cancel
                   </Button>
@@ -204,66 +256,104 @@ function Navbar() {
                 </Grid>
               </Box>
             </Modal>
-            {/* //!Modal for Sign up
+            {/* //!Modal for Sign up */}
             <Modal
-              open={open}
-              onClose={handleClose}
+              open={openSignUp}
+              onClose={handleCloseSignUp}
               aria-labelledby="parent-modal-title"
               aria-describedby="parent-modal-description"
             >
-              <Box sx={{ ...style, width: 400 }}>
+              <Box sx={{ ...style, width: 650 }}>
                 <h2 id="parent-modal-title">Sign Up</h2>
                 <Divider />
                 <Grid
                   container
                   direction="row"
-                  justifyContent="space-between"
+                  justifyContent="flex-start"
                   alignItems="center"
                 >
-                  <Typography
-                    sx={{
-                      fontWeight: 700,
-                      fontSize: "18px",
-                      color: "#504E4E",
-                      mt: 2,
-                      mb: 1,
-                    }}
+                  <TextField
+                    id="standard-name-input"
+                    label="Name"
+                    variant="standard"
+                    onChange={changeFullName}
+                    value={fullname}
+                    sx={{ mt: "10px", mb: "35px", mr: "35px" }}
+                  />
+                  <TextField
+                    id="standard-select-gender"
+                    select
+                    label="Select"
+                    value={gender}
+                    onChange={handleChangeGender}
+                    variant="standard"
+                    sx={{ mt: "10px", mb: "35px", mr: "35px" }}
                   >
-                    Name
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontWeight: 700,
-                      fontSize: "18px",
-                      color: "#504E4E",
-                      mt: 2,
-                      mb: 1,
-                    }}
-                  >
-                    Date of Birth
-                  </Typography>
+                    {genders.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopDatePicker
+                    label="Date of Birth"
+                    inputFormat="DD/MM/YYYY"
+                    value={dateValue}
+                    onChange={handleChange}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  mt={2}
+                >
+                  <TextField
+                    id="email-input"
+                    label="Email"
+                    variant="standard"
+                    onChange={changeEmail}
+                    value={email}
+                    sx={{ mt: "10px", mb: "5px", mr: "35px" }}
+                  />
+                  <TextField
+                    id="phone-number-input"
+                    label="Phone Number"
+                    variant="standard"
+                    onChange={changePhoneNum}
+                    value={phoneNum}
+                    sx={{ mt: "10px" }}
+                  />
                 </Grid>
                 <Grid
                   container
                   direction="row"
-                  justifyContent="space-between"
+                  justifyContent="flex-start"
                   alignItems="center"
+                  mt={2}
                 >
-                  <TextFieldForm placeholderText={"example@sample.com"} />
+                  <TextField
+                    id="password-input"
+                    label="Password"
+                    variant="standard"
+                    onChange={changePassword}
+                    value={password}
+                    sx={{ mt: "10px", mb: "25px", mr: "35px" }}
+                  />
+                  <TextField
+                    id="con-password-input"
+                    label="Confirmed Password"
+                    variant="standard"
+                    onChange={changeConPassword}
+                    value={conPassword}
+                    sx={{ mt: "10px", mb: "25px" }}
+                  />
                 </Grid>
 
-                <Typography
-                  sx={{
-                    fontWeight: 700,
-                    fontSize: "18px",
-                    color: "#504E4E",
-                    mt: 2,
-                    mb: 1,
-                  }}
-                >
-                  Password
-                </Typography>
-                <TextFieldForm placeholderText={"******"} sx={{ mb: 2 }} />
                 <Divider />
                 <Grid
                   container
@@ -280,13 +370,16 @@ function Navbar() {
                       height: "50px",
                       mr: 1,
                     }}
+                    onClick={handleCloseSignUp}
                   >
                     Cancel
                   </Button>
-                  <ColorButton variant="container">Sign in</ColorButton>
+                  <ColorButton variant="container" onClick={submitSignUpForm}>
+                    Sign Up
+                  </ColorButton>
                 </Grid>
               </Box>
-            </Modal> */}
+            </Modal>
           </Grid>
         </Toolbar>
       </Container>
