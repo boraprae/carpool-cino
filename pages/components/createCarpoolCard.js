@@ -16,12 +16,12 @@ const BookingButton = styled(Button)(({ theme }) => ({
   fontWeight: "bold",
   textTransform: "capitalize",
   height: "40px",
-  width: "300px",
+  width: "100px",
   borderRadius: "15px",
   padding: 16,
-  backgroundColor: "#CC8D48",
+  backgroundColor: "#58CAD2",
   "&:hover": {
-    backgroundColor: "#A9773F",
+    backgroundColor: "#47AAB1",
   },
 }));
 
@@ -42,6 +42,7 @@ export default function CreateCarpoolCard() {
             direction="row"
             justifyContent="space-between"
             alignItems="flex-start"
+            mx={2}
           >
             <Stack
               direction="column"
@@ -88,24 +89,40 @@ export default function CreateCarpoolCard() {
               <Typography sx={{ fontSize: "14px" }}>
                 Central Plaza Chiang Rai
               </Typography>
+              <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
+                Seat
+              </Typography>
+              <Typography sx={{ fontSize: "14px", mt: 1 }}>1</Typography>
             </Stack>
           </Stack>
 
           <Stack
-            direction="row"
+            direction="column"
             justifyContent="flex-start"
-            alignItems="center"
+            alignItems="flex-start"
+            mx={2}
           >
+            <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
+              Description
+            </Typography>
+            <Typography sx={{ fontSize: "14px", mt: 1 }}>
+              From Mae Fah Luang University, can pick up you anywhere around the
+              university
+            </Typography>
           </Stack>
-          <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
-            Description
-          </Typography>
-          <Typography sx={{ fontSize: "14px", mt: 1 }}>
-            From Mae Fah Luang University, can pick up you anywhere around the
-            university
-          </Typography>
+
           <Divider sx={{ mb: 2, mt: 2 }} />
-          <BookingButton>Booking</BookingButton>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="flex-start"
+            mx={2}
+          >
+            <Typography sx={{ fontSize: "14px", mt: 1 }}>
+              Lastest Update: 18/11/2022
+            </Typography>
+            <BookingButton>Edit</BookingButton>
+          </Stack>
         </CardContent>
       </Card>
     </>

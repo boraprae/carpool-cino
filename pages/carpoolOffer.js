@@ -24,6 +24,7 @@ export default function carPoolOffer() {
         Create Offer
       </Button>
       <CreateCarpoolCard/>
+      <CreateCarpoolCard/>
     </main>
   );
 }
