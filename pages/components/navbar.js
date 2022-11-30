@@ -10,13 +10,14 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { styled } from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
 import dayjs from "dayjs";
+import { styled } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import MenuItem from "@mui/material/MenuItem";
+
 function Navbar() {
   //modal sign up action
   const [openSignUp, setOpenSignUp] = React.useState(false);
