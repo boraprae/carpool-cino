@@ -10,7 +10,6 @@ export default async function handler(req, res) {
         const license = req.body.license;
         // const image = req.body.image;
 
-
         console.log(userid, brand, model, color, license);
 
         try {
@@ -22,9 +21,8 @@ export default async function handler(req, res) {
 
 
                 //post data to database
-                // const sql = "INSERT INTO car(car_brand , car_model , car_color , car_license , userid ) VALUES(?,?,?,?,?,?)";
-                // const result = await pool(sql, [brand, model, color, license, userid],);
-
+                const sql = "INSERT INTO car(car_brand , car_model , car_color , car_license , user_id ) VALUES(?,?,?,?,?)";
+                const result = await pool.query(sql, [brand, model, color, license, userid],);
 
                 return res.send("ok");
 
