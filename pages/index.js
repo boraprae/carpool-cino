@@ -19,6 +19,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+
 import OfferCard from "./components/offerCard";
 
 const ColorButton = styled(Button)(({ theme }) => ({
@@ -35,6 +38,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
 export default function Home() {
   const router = useRouter();
   const [value, setValue] = React.useState(null);
+
   return (
     <>
       <Stack
