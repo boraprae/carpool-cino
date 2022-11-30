@@ -5,6 +5,7 @@ import styles from "../styles/Home.module.css";
 import { useRouter } from "next/router";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import { useEffect, useState } from "react";
 
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -18,6 +19,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
 
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -37,7 +39,45 @@ const ColorButton = styled(Button)(({ theme }) => ({
 
 export default function Home() {
   const router = useRouter();
-  const [value, setValue] = React.useState(null);
+  const [value, setValue] = useState(null);
+
+  const [offer, setOffer] = useState([]);
+
+  const fetchOffer = async () => {
+    try {
+
+      let headersList = {
+        "Accept": "*/*",
+        "Content-Type": "application/json"
+      }
+
+      let response = await fetch("http://localhost:3000/api/GetOffer", {
+        method: "GET",
+        headers: headersList
+      });
+
+      if (response.ok) {
+        let data = await response.json();
+        setOffer(data);
+        // console.log();
+      } else {
+        throw Error("fetch offer Error");
+      }
+
+    } catch (error) {
+      console.error(error.message);
+      //     res.status(500).send(error.message);
+    }
+  };
+
+
+  useEffect(() => {
+    // console.log("test");
+    fetchOffer();
+
+
+  }, [])
+
 
   return (
     <>
@@ -139,10 +179,12 @@ export default function Home() {
           justifyContent="flex-start"
           alignItems="center"
         >
-          <OfferCard />
-          <OfferCard />
-          <OfferCard />
-          <OfferCard />
+          {
+            offer.map((item, index) => {
+              return <OfferCard />
+            })
+          }
+
         </Grid>
       </Grid>
     </>

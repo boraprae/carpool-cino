@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
         try {
             // query user info from DB
-            const sql = "SELECT user_email , user_password FROM user WHERE user_email = ?";
+            const sql = "SELECT user_name, user_email , user_password FROM user WHERE user_email = ?";
             const [rows] = await pool.query(sql, [email]);
             if (rows.length === 1) {
                 // user found and get the password
@@ -19,7 +19,10 @@ export default async function handler(req, res) {
                 // return res.send("ok");
                 const same = await bcrypt.compare(raw_pass, hash);
                 if (same) {
-                    return res.send("Login OK");
+                    return res.send({
+                        "name": rows[0].user_name,
+                        "email": rows[0].user_email
+                    });
                 }
                 else {
                     return res.status(401).send("Wrong password");

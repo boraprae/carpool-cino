@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import TextFieldForm from "./textfiledForm";
 import { styled } from "@mui/material/styles";
+import { useEffect, useState } from "react";
 import Divider from "@mui/material/Divider";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -27,6 +28,9 @@ function Navbar() {
   const handleOpenSignUp = () => {
     setOpenSignUp(true);
   };
+
+  const [loginState, setLoginSatet] = useState(false);
+
   const handleCloseSignUp = () => {
     setFullName("");
     setPhoneNum("");
@@ -128,7 +132,8 @@ function Navbar() {
 
         if (response.ok) {
           let data = await response.text();
-          console.log(data);
+          setuInfo(true);
+          // console.log(data);
           handleClose();
         } else {
           throw Error("Login Error");

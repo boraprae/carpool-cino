@@ -1,33 +1,34 @@
 import bcrypt from "bcrypt";
-import {pool} from "../../../config/db";
+import { pool } from "../api/config/db.js";
 //POST METHOD
 export default async function handler(req, res) {
-    if(req.method == "POST") {
+    if (req.method == "POST") {
         const userid = req.body.userid;
         const brand = req.body.brand;
         const model = req.body.model;
         const color = req.body.color;
         const license = req.body.license;
-        const image = req.body.image;
+        // const image = req.body.image;
 
-        
+
+        console.log(userid, brand, model, color, license);
+
         try {
             // query user info from DB
-            const sql = "SELECT username FROM car WHERE car_license=?";
+            const sql = "SELECT car_color FROM car WHERE car_license=?";
             const [rows] = await pool.query(sql, [license]);
-            if(rows.length === 0) {
+            if (rows.length === 0) {
                 // user not found 
-                // can register
-                
-                //hash pass
-                const hash = await bcrypt.hash(pass, 10);
-                res.send("Can register");
+
 
                 //post data to database
-                const result = await pool({
-                    query: 'INSERT INTO `post`(`car_brand`,`car_model`,`car_color`,`car_license`,`car_image`,`userid`) VALUES(?,?,?,?,?,?)',
-                    values: [brand,model,color,license,image,userid],
-                });
+                // const sql = "INSERT INTO car(car_brand , car_model , car_color , car_license , userid ) VALUES(?,?,?,?,?,?)";
+                // const result = await pool(sql, [brand, model, color, license, userid],);
+
+
+                return res.send("ok");
+
+
             }
             //found user
             else {
