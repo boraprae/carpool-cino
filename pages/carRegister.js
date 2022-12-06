@@ -22,6 +22,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Backdrop from '@mui/material/Backdrop';
 import TextField from "@mui/material/TextField";
+import { useEffect, useState } from "react";
 
 
 const style = {
@@ -86,12 +87,125 @@ const EditButton = styled(Button)(({ theme }) => ({
 export default function carRegister() {
 
     //modal Add Car 
+
+    const [datacar, setDatacar] = React.useState(null);
+
     const [openAddCar, setOpenAddCar] = React.useState(false);
+    const [carbrand, setCarbrand] = React.useState("");
+    const [carmodel, setCarmodel] = React.useState("");
+    const [carcolor, setCarcolor] = React.useState("");
+    const [carlicense, setCarLicense] = React.useState("");
+
+
+    const fetchCardata = async () => {
+        try {
+
+            let headersList = {
+                "Accept": "*/*",
+                "Content-Type": "application/json"
+            }
+
+            let bodyContent = JSON.stringify({
+                "userid": 6,
+            });
+
+            let response = await fetch("http://localhost:3000/api/GetCar", {
+                method: "POST",
+                body: bodyContent,
+                headers: headersList
+            });
+
+            if (response.ok) {
+                let data = await response.json();
+                setDatacar(data);
+                console.log(data);
+            } else {
+                throw Error("fetch offer Error");
+            }
+
+        } catch (error) {
+            console.error(error.message);
+            //     res.status(500).send(error.message);
+        }
+    };
+
+    useEffect(() => {
+        // console.log("test");
+        fetchCardata();
+
+
+    }, [])
+
     const handleOpenAddCar = () => {
         setOpenAddCar(true);
     };
     const handleCloseAddCar = () => {
+        setCarbrand("");
+        setCarcolor("");
+        setCarLicense("");
+        setCarmodel("");
+
         setOpenAddCar(false);
+    };
+
+    const inputCarbrand = (event) => {
+        setCarbrand(event.target.value);
+        // console.log(event.target.value);
+    };
+
+    const inputCarmodel = (event) => {
+        setCarmodel(event.target.value);
+        // console.log(event.target.value);
+    };
+
+    const inputCarcolor = (event) => {
+        setCarcolor(event.target.value);
+        // console.log(event.target.value);
+    };
+
+    const inputCarlicense = (event) => {
+        setCarLicense(event.target.value);
+        // console.log(event.target.value);
+    };
+
+
+    const addcar = async () => {
+        console.log(carbrand, carcolor, carmodel, carlicense);
+        if (carbrand != "" && carcolor != "" && carmodel != "" && carlicense != "") {
+
+            try {
+                let headersList = {
+                    "Accept": "*/*",
+                    "Content-Type": "application/json"
+                }
+
+                let bodyContent = JSON.stringify({
+                    "userid": 6,
+                    "carbrand": carbrand,
+                    "carcolor": carcolor,
+                    "carmodel": carmodel,
+                    "carlicense": carlicense,
+                });
+
+                let response = await fetch("http://localhost:3000/api/addCar", {
+                    method: "POST",
+                    body: bodyContent,
+                    headers: headersList
+                });
+
+                if (response.ok) {
+                    let data = await response.text();
+                    // setuInfo(true);
+                    console.log(data);
+                    handleCloseAddCar();
+                } else {
+                    throw Error("Login Error");
+                }
+
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
     };
 
     //modal Edit
@@ -128,87 +242,93 @@ export default function carRegister() {
             </AddCarButton>
 
             {/* Media Card */}
-            <Card
-                sx={{
-                    maxWidth: 1038,
-                    mt: 4,
-                    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
-                    borderRadius: "15px",
-                    mr: 5,
-                }}
-            >
-                <CardMedia
-                    component="img"
-                    height="200"
-                    image="/assets/headweb.png"
-                    alt="car1"
-                />
-                <CardContent>
-                    <Stack
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="flex-start"
-                    >
-                        <Stack
-                            direction="column"
-                            justifyContent="flex-start"
-                            alignItems="flex-start"
-                        >
-                            <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
-                                Car brand
-                            </Typography>
-                            <Typography sx={{ fontSize: "14px" }}>Mitsubishi</Typography>
-                        </Stack>
 
-                        <Stack
-                            direction="column"
-                            justifyContent="flex-start"
-                            alignItems="flex-start"
-                        >
-                            <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
-                                Car model
-                            </Typography>
-                            <Typography sx={{ fontSize: "14px" }}>
-                                Pickup Truck
-                            </Typography>
-                        </Stack>
-                        <Stack
-                            direction="column"
-                            justifyContent="flex-start"
-                            alignItems="flex-start"
-                        >
-                            <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
-                                Car color
-                            </Typography>
-                            <Typography sx={{ fontSize: "14px" }}>
-                                Blue
-                            </Typography>
-                        </Stack>
-                        <Stack
-                            direction="column"
-                            justifyContent="flex-start"
-                            alignItems="flex-start"
-                        >
-                            <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
-                                License plate number
-                            </Typography>
-                            <Typography sx={{ fontSize: "14px" }}>กขค 123 เชียงราย</Typography>
-                        </Stack>
-                    </Stack>
-
-                    <Divider sx={{ mb: 2, mt: 2 }} />
-                    <Stack
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="center"
+            {
+                datacar == null ? <></> : datacar.map((item, index) => {
+                    return <Card
+                        key={index}
+                        sx={{
+                            maxWidth: 1038,
+                            mt: 4,
+                            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
+                            borderRadius: "15px",
+                            mr: 5,
+                        }}
                     >
-                        <Typography sx={{ fontSize: "14px" }}>
-                            Lastest Update: 18/11/2022
-                        </Typography>
-                        <EditButton onClick={handleOpenEdit}>Edit</EditButton>
-                    </Stack>
-                </CardContent>
-            </Card>
+                        <CardMedia
+                            component="img"
+                            height="200"
+                            image="/assets/headweb.png"
+                            alt="car1"
+                        />
+                        <CardContent>
+                            <Stack
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="flex-start"
+                            >
+                                <Stack
+                                    direction="column"
+                                    justifyContent="flex-start"
+                                    alignItems="flex-start"
+                                >
+                                    <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
+                                        Car brand
+                                    </Typography>
+                                    <Typography sx={{ fontSize: "14px" }}>{item.car_brand}</Typography>
+                                </Stack>
+
+                                <Stack
+                                    direction="column"
+                                    justifyContent="flex-start"
+                                    alignItems="flex-start"
+                                >
+                                    <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
+                                        Car model
+                                    </Typography>
+                                    <Typography sx={{ fontSize: "14px" }}>
+                                        {item.car_model}
+                                    </Typography>
+                                </Stack>
+                                <Stack
+                                    direction="column"
+                                    justifyContent="flex-start"
+                                    alignItems="flex-start"
+                                >
+                                    <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
+                                        Car color
+                                    </Typography>
+                                    <Typography sx={{ fontSize: "14px" }}>
+                                        {item.car_color}
+                                    </Typography>
+                                </Stack>
+                                <Stack
+                                    direction="column"
+                                    justifyContent="flex-start"
+                                    alignItems="flex-start"
+                                >
+                                    <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
+                                        License plate number
+                                    </Typography>
+                                    <Typography sx={{ fontSize: "14px" }}>{item.car_license}</Typography>
+                                </Stack>
+                            </Stack>
+
+                            <Divider sx={{ mb: 2, mt: 2 }} />
+                            <Stack
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                            >
+                                <Typography sx={{ fontSize: "14px" }}>
+                                    {item.car_update_date}
+                                </Typography>
+                                <EditButton onClick={handleOpenEdit}>Edit</EditButton>
+                            </Stack>
+                        </CardContent>
+                    </Card>
+                })
+            }
 
             {/* Modal Edit */}
             <Modal
@@ -260,8 +380,8 @@ export default function carRegister() {
                                     id="standard-email-input"
                                     label="Car brand"
                                     variant="standard"
-                                    //onChange={changeEmail}
-                                    //value={email}
+                                    // onChange={inputCarbrand}
+                                    // value={carbrand}
 
                                     sx={{ mt: "10px" }}
                                 />
@@ -393,8 +513,8 @@ export default function carRegister() {
                                     id="standard-email-input"
                                     label="Car brand"
                                     variant="standard"
-                                    //onChange={changeEmail}
-                                    //value={email}
+                                    onChange={inputCarbrand}
+                                    value={carbrand}
 
                                     sx={{ mt: "10px" }}
                                 />
@@ -402,8 +522,8 @@ export default function carRegister() {
                                     id="standard-email-input"
                                     label="Car color"
                                     variant="standard"
-                                    //onChange={changeEmail}
-                                    //value={email}
+                                    onChange={inputCarcolor}
+                                    value={carcolor}
 
                                     sx={{ mt: 3, }}
 
@@ -423,8 +543,8 @@ export default function carRegister() {
                                     id="standard-email-input"
                                     label="Car model"
                                     variant="standard"
-                                    //onChange={changeEmail}
-                                    //value={email}
+                                    onChange={inputCarmodel}
+                                    value={carmodel}
 
                                     sx={{ mt: "10px" }}
                                 />
@@ -432,8 +552,8 @@ export default function carRegister() {
                                     id="standard-email-input"
                                     label="License plate number"
                                     variant="standard"
-                                    //onChange={changeEmail}
-                                    //value={email}
+                                    onChange={inputCarlicense}
+                                    value={carlicense}
                                     sx={{ mt: 3 }}
                                 />
                             </Stack>
@@ -467,7 +587,7 @@ export default function carRegister() {
                                     height: "50px",
                                     mr: 1,
                                 }}
-                            //onClick={handleCloseAddCar}
+                                onClick={addcar}
                             >
                                 Submit
                             </Button>

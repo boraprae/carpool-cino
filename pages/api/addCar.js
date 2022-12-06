@@ -2,30 +2,30 @@ import bcrypt from "bcrypt";
 import { pool } from "../api/config/db.js";
 //POST METHOD
 export default async function handler(req, res) {
+    // console.log(carbrand , carcolor , carmodel , carlicense);
     if (req.method == "POST") {
         const userid = req.body.userid;
-        const brand = req.body.brand;
-        const model = req.body.model;
-        const color = req.body.color;
-        const license = req.body.license;
+        const carbrand = req.body.carbrand;
+        const carcolor = req.body.carcolor;
+        const carmodel = req.body.carmodel;
+        const carlicense = req.body.carlicense;
         // const image = req.body.image;
 
-        console.log(userid, brand, model, color, license);
+        // console.log(carbrand, carcolor, carmodel, carlicense);
 
         try {
             // query user info from DB
             const sql = "SELECT car_color FROM car WHERE car_license=?";
-            const [rows] = await pool.query(sql, [license]);
+            const [rows] = await pool.query(sql, [carlicense]);
+            // console.log(rows.length);
             if (rows.length === 0) {
                 // user not found 
 
-
                 //post data to database
                 const sql = "INSERT INTO car(car_brand , car_model , car_color , car_license , user_id ) VALUES(?,?,?,?,?)";
-                const result = await pool.query(sql, [brand, model, color, license, userid],);
+                const result = await pool.query(sql, [carbrand, carmodel, carcolor, carlicense, userid],);
 
                 return res.send("ok");
-
 
             }
             //found user
