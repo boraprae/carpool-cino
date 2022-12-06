@@ -11,30 +11,13 @@ export default async function handler(req, res) {
         const price = req.body.price;
         const description = req.body.description;
         const carid = req.body.carid;
-        
+
         try {
-            // query user info from DB
-            const sql = "SELECT username FROM car WHERE car_license=?";
-            const [rows] = await pool.query(sql, [license]);
-            if (rows.length === 0) {
-                // user not found 
-                // can register
+            //post data to database
+            const sql = "INSERT INTO offer(offer_date , offer_time , offer_origin , offer_destination , offer_seat , offer_price , offer_description  , offer_car ) VALUES (?,?,?,?,?,?,?,?)";
+            const result = await pool.query(sql, [date, time, origin, destination, seat, price, description, carid]);
 
-                //hash pass
-                const hash = await bcrypt.hash(pass, 10);
-                res.send("Can register");
-
-                //post data to database
-                const sql = "INSERT INTO offer(,`car_model`,`car_color`,`car_license`,`car_image`,`userid`) VALUES(?,?,?,?,?,?)";
-                const result = await pool.query({
-                    query: 'INSERT INTO `post`(`car_brand`,`car_model`,`car_color`,`car_license`,`car_image`,`userid`) VALUES(?,?,?,?,?,?)',
-                    values: [brand, model, color, license, image, userid],
-                });
-            }
-            //found user
-            else {
-                throw Error("car license found!! Please add other car license");
-            }
+            
         } catch (error) {
             console.error(error.message);
             res.status(500).send(error.message);
