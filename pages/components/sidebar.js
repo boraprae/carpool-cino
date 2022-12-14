@@ -67,7 +67,7 @@ export default function Sidebar() {
               pt: 3,
             }}
           >
-            My Carpool
+            My Account
           </Typography>
           <ListItem disablePadding>
             <ListItemButton onClick={() => router.push("/editProfileInfo")}>
