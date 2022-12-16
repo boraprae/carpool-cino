@@ -9,6 +9,7 @@ import Stack from "@mui/material/Stack";
 
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
+import { useState } from "react";
 
 const BookingButton = styled(Button)(({ theme }) => ({
   color: "#FFFFFF",
@@ -25,10 +26,20 @@ const BookingButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export default function CreateCarpoolCard() {
+export default function CreateCarpoolCard({
+  id,
+  carInfo,
+  origin,
+  destination,
+  departureDate,
+  departureTime,
+  seat,
+  description,
+}) {
   return (
     <>
       <Card
+        key={id}
         sx={{
           width: "1200px",
           mt: 4,
@@ -52,13 +63,11 @@ export default function CreateCarpoolCard() {
               <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
                 Car Information
               </Typography>
-              <Typography sx={{ fontSize: "14px" }}>
-                Mitsubishi กขค 123 เชียงราย
-              </Typography>
+              <Typography sx={{ fontSize: "14px" }}>{carInfo}</Typography>
               <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
                 Departure Date
               </Typography>
-              <Typography sx={{ fontSize: "14px" }}>2 Nov 2022</Typography>
+              <Typography sx={{ fontSize: "14px" }}>{departureDate}</Typography>
             </Stack>
 
             <Stack
@@ -69,14 +78,12 @@ export default function CreateCarpoolCard() {
               <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
                 Origin
               </Typography>
-              <Typography sx={{ fontSize: "14px" }}>
-                Mae Fah Luang University
-              </Typography>
+              <Typography sx={{ fontSize: "14px" }}>{origin}</Typography>
 
               <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
                 Departure Time
               </Typography>
-              <Typography sx={{ fontSize: "14px" }}>5 P.M.</Typography>
+              <Typography sx={{ fontSize: "14px" }}>{departureTime}</Typography>
             </Stack>
             <Stack
               direction="column"
@@ -86,13 +93,11 @@ export default function CreateCarpoolCard() {
               <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
                 Destination
               </Typography>
-              <Typography sx={{ fontSize: "14px" }}>
-                Central Plaza Chiang Rai
-              </Typography>
+              <Typography sx={{ fontSize: "14px" }}>{description}</Typography>
               <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
                 Seat
               </Typography>
-              <Typography sx={{ fontSize: "14px", mt: 1 }}>1</Typography>
+              <Typography sx={{ fontSize: "14px", mt: 1 }}>{seat}</Typography>
             </Stack>
           </Stack>
 
@@ -106,8 +111,7 @@ export default function CreateCarpoolCard() {
               Description
             </Typography>
             <Typography sx={{ fontSize: "14px", mt: 1 }}>
-              From Mae Fah Luang University, can pick up you anywhere around the
-              university
+              {description}
             </Typography>
           </Stack>
 

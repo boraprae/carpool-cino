@@ -15,7 +15,31 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import dayjs from "dayjs";
 
 export default function carPoolOffer() {
-  const [carpoolOffer, setCarpoolOffer] = React.useState([]);
+  //mock up data
+  const [carpoolOffer, setCarpoolOffer] = React.useState([
+    {
+      id: 1,
+      carInfo: "Mitsubishi กขค 123 เชียงราย",
+      origin: "Mae Fah Luang University",
+      destination: "Central Plaza Chiang Rai",
+      departureDate: "2 Nov 2022",
+      departureTime: "5 P.M.",
+      seat: "1",
+      description:
+        "From Mae Fah Luang University, can pick up you anywhere around the university",
+    },
+    {
+      id: 2,
+      carInfo: "Mitsubishi กขค 123 เชียงราย",
+      origin: "Mae Fah Luang University",
+      destination: "Central Plaza Chiang Rai",
+      departureDate: "2 Nov 2022",
+      departureTime: "5 P.M.",
+      seat: "1",
+      description: " can pick up you anywhere around the university",
+    },
+  ]);
+  let [newOffer, setNewOffer] = React.useState("");
   //modal sign up action
   const [openModal, setOpenModal] = React.useState(false);
   const handleOpenModal = () => {
@@ -30,6 +54,8 @@ export default function carPoolOffer() {
   const [maxSeat, setMaxSeat] = React.useState("");
   const [origin, setOrigin] = React.useState("");
   const [destination, setDestination] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [departureDate, setDepartureDate] = React.useState("");
   const [departureTime, setDepartureTime] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -44,17 +70,40 @@ export default function carPoolOffer() {
   const changeMaxSeat = (event) => {
     setMaxSeat(event.target.value);
   };
-
   const changeOrigin = (event) => {
     setOrigin(event.target.value);
   };
-
   const changeDestination = (event) => {
     setDestination(event.target.value);
   };
-
-  const changeDrpartureTime = (event) => {
+  const changeDepartureTime = (event) => {
     setDepartureTime(event.target.value);
+  };
+  const changeDepartureDate = (event) => {
+    setDepartureDate(event.target.value);
+  };
+  const changeDescription = (event) => {
+    setDescription(event.target.value);
+  };
+
+  const addOffer = () => {
+    let newOffer = [...carpoolOffer];
+    //create item add to the array
+    const item = {
+      id: newOffer.length+1,
+      carInfo: carInfo,
+      origin: origin,
+      destination: destination,
+      departureDate: dateValue,
+      departureTime: departureTime,
+      seat: maxSeat,
+      description: destination,
+    };
+    console.log(item);
+    // newOffer.push(item);
+    // setCarpoolOffer(newOffer);
+    // setNewOffer("");
+    handleCloseModal();
   };
 
   const ColorButton = styled(Button)(({ theme }) => ({
@@ -103,8 +152,10 @@ export default function carPoolOffer() {
       >
         Create Offer
       </Button>
-      <CreateCarpoolCard />
-      <CreateCarpoolCard />
+
+      {carpoolOffer.map((element) => {
+        return <CreateCarpoolCard {...element} key={element.keyID} />;
+      })}
 
       <Modal
         open={openModal}
@@ -179,7 +230,7 @@ export default function carPoolOffer() {
             alignItems="center"
             mt={2}
           >
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DesktopDatePicker
                 label="Departure date"
                 inputFormat="DD/MM/YYYY"
@@ -187,12 +238,20 @@ export default function carPoolOffer() {
                 onChange={handleChange}
                 renderInput={(params) => <TextField {...params} />}
               />
-            </LocalizationProvider>
+            </LocalizationProvider> */}
+            <TextField
+              id="con-password-input"
+              label="Departure date"
+              variant="standard"
+              onChange={changeDepartureDate}
+              value={departureDate}
+              sx={{ mt: "10px", mb: "25px" }}
+            />
             <TextField
               id="con-password-input"
               label="Departure time"
               variant="standard"
-              onChange={changeDrpartureTime}
+              onChange={changeDepartureTime}
               value={departureTime}
               sx={{ mt: "10px", mb: "25px", ml: "20px" }}
             />
@@ -201,8 +260,8 @@ export default function carPoolOffer() {
             id="con-password-input"
             label="Description"
             variant="standard"
-            onChange={changeDrpartureTime}
-            value={departureTime}
+            onChange={changeDescription}
+            value={description}
             sx={{ mt: "10px", mb: "25px" }}
           />
           <Divider />
@@ -225,7 +284,9 @@ export default function carPoolOffer() {
             >
               Cancel
             </Button>
-            <ColorButton variant="container">Sign Up</ColorButton>
+            <ColorButton variant="container" onClick={addOffer}>
+              Submit
+            </ColorButton>
           </Grid>
         </Box>
       </Modal>
