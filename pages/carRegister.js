@@ -76,9 +76,41 @@ export default function carRegister() {
     const [images, setImages] = React.useState([]);
     const [imageURLs, setImageURLs] = React.useState([]);
     const [cars, setCars] = React.useState([
-        { image: "/assets/headweb.png", Band: 'Ford', Model: 'Ranger Raptor', Color: 'red', Plate: 'กย.15', id: 100 },
+        { image: "/assets/headweb.png", Brand: 'Ford', Model: 'Ranger Raptor', Color: 'red', Plate: 'กย.15', id: 100 },
 
     ]);
+
+    // const fetchCardata = async () => {
+    //     try {
+
+    //         let headersList = {
+    //             "Accept": "*/*",
+    //             "Content-Type": "application/json"
+    //         }
+
+    //         let bodyContent = JSON.stringify({
+    //             "userid": 6,
+    //         });
+
+    //         let response = await fetch("http://localhost:3000/api/GetCar", {
+    //             method: "POST",
+    //             body: bodyContent,
+    //             headers: headersList
+    //         });
+
+    //         if (response.ok) {
+    //             let data = await response.json();
+    //             setDatacar(data);
+    //             console.log(data);
+    //         } else {
+    //             throw Error("fetch offer Error");
+    //         }
+
+    //     } catch (error) {
+    //         console.error(error.message);
+    //         //     res.status(500).send(error.message);
+    //     }
+    // };
 
     useEffect(() => {
         if (images.length < 1) return;
@@ -88,6 +120,7 @@ export default function carRegister() {
     }, [images]);
 
     function onImageChange(e) {
+        console.log(e.target.files[0]);
         setImages([...e.target.files]);
     }
 
@@ -134,7 +167,7 @@ export default function carRegister() {
                         <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
                             Car brand
                         </Typography>
-                        <Typography sx={{ fontSize: "14px" }}>{e.Band}</Typography>
+                        <Typography sx={{ fontSize: "14px" }}>{e.Brand}</Typography>
                     </Stack>
 
                     <Stack
@@ -189,15 +222,18 @@ export default function carRegister() {
     ));
 
     //=================Add Car ==============================
-    const Addcar = () => {
+    const Addcar = async () => {
         let newCars = [...cars];
         {
             imageURLs.map((imageSrc) => (
                 <img src={imageSrc} />
             ))
         }
-        const item = { image: imageURLs, Band: inputs.CarBand, Model: inputs.CarModel, Color: inputs.CarColor, Plate: inputs.CarPlate, id: newCars.length + 100 };
-        if (imageURLs.length == 0 || inputs.CarBand == null || inputs.CarModel == null || inputs.CarColor == null || inputs.CarPlate == null) {
+        const item = { image: imageURLs, Brand: inputs.CarBrand, Model: inputs.CarModel, Color: inputs.CarColor, Plate: inputs.CarPlate, id: newCars.length + 100 };
+
+        console.log(item.image[0]);
+
+        if (imageURLs.length == 0 || inputs.CarBrand == null || inputs.CarModel == null || inputs.CarColor == null || inputs.CarPlate == null) {
             swal({
                 title: "Fail!",
                 text: "Please sign the info!",
@@ -206,20 +242,75 @@ export default function carRegister() {
             })
         }
         else {
-            swal({
-                title: "Success!",
-                text: "Add success!",
-                icon: "success",
-                dangerMode: true,
-            })
-            newCars.push(item);
-            setCars(newCars);
-            setOpenAddCar(false);
-            //Clear Text    
-            setInputs({});
-            setImageURLs([]);
+
+            // const body = new FormData();
+            // body.append("file", images[0]);
+            // const responseImage = await fetch("http://localhost:3000/api/addImageCar", {
+            //     method: "POST",
+            //     body
+            // });
+
+            // console.log(item.image[0]);
+
+            try {
+
+                let headersList = {
+                    "Accept": "*/*",
+                    "Content-Type": "application/json"
+                }
+
+                let bodyContent = JSON.stringify({
+                    "userid": 6,
+                    "carimage": item.image,
+                    "carbrand": item.Brand,
+                    "carcolor": item.Color,
+                    "carmodel": item.Model,
+                    "carlicense": item.Plate,
+                });
+
+                let response = await fetch("http://localhost:3000/api/addCar", {
+                    method: "POST",
+                    body: bodyContent,
+                    headers: headersList
+                });
+
+                if (response.ok) {
+                    // console.log(response);
+
+                    // const body = new FormData();
+                    // body.append("file", images[0]);
+                    // const responseImage = await fetch("http://localhost:3000/api/addImageCar", {
+                    //     method: "POST",
+                    //     body
+                    // });
+
+                    swal({
+                        title: "Success!",
+                        text: "Add success!",
+                        icon: "success",
+                        dangerMode: true,
+                    })
+
+                    newCars.push(item);
+                    setCars(newCars);
+                    setOpenAddCar(false);
+                    //Clear Text    
+                    setInputs({});
+                    setImageURLs([]);
+                    // let data = await response.json();
+                    // setDatacar(data);
+                    // console.log(data);
+                } else {
+                    throw Error("fetch offer Error");
+                }
+
+            } catch (error) {
+                console.error(error.message);
+                //     res.status(500).send(error.message);
+            }
+
         }
-        console.log(imageURLs.length);
+        // console.log(imageURLs.length);
     }
 
     //================= Edit Car ==============================
@@ -461,8 +552,8 @@ export default function carRegister() {
                                     label="Car brand"
                                     variant="standard"
                                     onChange={handleChange}
-                                    name="CarBand"
-                                    value={inputs.CarBand}
+                                    name="CarBrand"
+                                    value={inputs.CarBrand}
                                     sx={{ mt: "10px" }}
                                 />
                                 <TextField

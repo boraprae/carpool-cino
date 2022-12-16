@@ -107,7 +107,7 @@ export default function OfferCard() {
             <Typography sx={{ fontSize: "16px" }}>2 Nov 2022</Typography>
             <Typography sx={{ fontSize: "16px" }}>5 P.M.</Typography>
           </Stack>
-          <Divider sx={{mb:2, mt:2}} />
+          <Divider sx={{ mb: 2, mt: 2 }} />
           <BookingButton>Booking</BookingButton>
         </CardContent>
       </Card>
