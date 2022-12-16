@@ -22,8 +22,8 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Backdrop from '@mui/material/Backdrop';
 import TextField from "@mui/material/TextField";
-import { useEffect, useState } from "react";
-
+import { useEffect } from "react";
+import swal from 'sweetalert';
 
 const style = {
     position: "absolute",
@@ -54,20 +54,6 @@ const AddCarButton = styled(Button)(({ theme }) => ({
         backgroundColor: "#A9773F",
     },
 }));
-const AddImageButton = styled(Button)(({ theme }) => ({
-    color: "#FFFFFF",
-    fontSize: "14px",
-    fontWeight: "bold",
-    textTransform: "capitalize",
-    height: "42px",
-    width: "140px",
-    borderRadius: "10px",
-    padding: 16,
-    backgroundColor: "#58CAD2",
-    "&:hover": {
-        backgroundColor: "#A9773F",
-    },
-}));
 
 const EditButton = styled(Button)(({ theme }) => ({
     color: "#FFFFFF",
@@ -85,95 +71,189 @@ const EditButton = styled(Button)(({ theme }) => ({
 }));
 
 export default function carRegister() {
+    const current = new Date();
+    const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+    const [images, setImages] = React.useState([]);
+    const [imageURLs, setImageURLs] = React.useState([]);
+    const [cars, setCars] = React.useState([
+        { image: "/assets/headweb.png", Brand: 'Ford', Model: 'Ranger Raptor', Color: 'red', Plate: 'กย.15', id: 100 },
 
-    //modal Add Car 
+    ]);
 
-    const [datacar, setDatacar] = React.useState(null);
+    // const fetchCardata = async () => {
+    //     try {
 
-    const [openAddCar, setOpenAddCar] = React.useState(false);
-    const [carbrand, setCarbrand] = React.useState("");
-    const [carmodel, setCarmodel] = React.useState("");
-    const [carcolor, setCarcolor] = React.useState("");
-    const [carlicense, setCarLicense] = React.useState("");
+    //         let headersList = {
+    //             "Accept": "*/*",
+    //             "Content-Type": "application/json"
+    //         }
 
+    //         let bodyContent = JSON.stringify({
+    //             "userid": 6,
+    //         });
 
-    const fetchCardata = async () => {
-        try {
+    //         let response = await fetch("http://localhost:3000/api/GetCar", {
+    //             method: "POST",
+    //             body: bodyContent,
+    //             headers: headersList
+    //         });
 
-            let headersList = {
-                "Accept": "*/*",
-                "Content-Type": "application/json"
-            }
+    //         if (response.ok) {
+    //             let data = await response.json();
+    //             setDatacar(data);
+    //             console.log(data);
+    //         } else {
+    //             throw Error("fetch offer Error");
+    //         }
 
-            let bodyContent = JSON.stringify({
-                "userid": 6,
-            });
-
-            let response = await fetch("http://localhost:3000/api/GetCar", {
-                method: "POST",
-                body: bodyContent,
-                headers: headersList
-            });
-
-            if (response.ok) {
-                let data = await response.json();
-                setDatacar(data);
-                console.log(data);
-            } else {
-                throw Error("fetch offer Error");
-            }
-
-        } catch (error) {
-            console.error(error.message);
-            //     res.status(500).send(error.message);
-        }
-    };
+    //     } catch (error) {
+    //         console.error(error.message);
+    //         //     res.status(500).send(error.message);
+    //     }
+    // };
 
     useEffect(() => {
-        // console.log("test");
-        fetchCardata();
+        if (images.length < 1) return;
+        const newImageUrls = [];
+        images.forEach((image) => newImageUrls.push(URL.createObjectURL(image)));
+        setImageURLs(newImageUrls);
+    }, [images]);
 
+    function onImageChange(e) {
+        console.log(e.target.files[0]);
+        setImages([...e.target.files]);
+    }
 
-    }, [])
+    const [inputs, setInputs] = React.useState({
 
-    const handleOpenAddCar = () => {
-        setOpenAddCar(true);
-    };
-    const handleCloseAddCar = () => {
-        setCarbrand("");
-        setCarcolor("");
-        setCarLicense("");
-        setCarmodel("");
+    });
 
-        setOpenAddCar(false);
-    };
+    const [editID, setEditID] = React.useState(0);
 
-    const inputCarbrand = (event) => {
-        setCarbrand(event.target.value);
-        // console.log(event.target.value);
-    };
+    const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setInputs({ ...inputs, [name]: value });
+    }
 
-    const inputCarmodel = (event) => {
-        setCarmodel(event.target.value);
-        // console.log(event.target.value);
-    };
+    const listCard = cars.map((e) => (
 
-    const inputCarcolor = (event) => {
-        setCarcolor(event.target.value);
-        // console.log(event.target.value);
-    };
+        <Card
+            sx={{
+                width: 1038,
+                mt: 4,
+                boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
+                borderRadius: "15px",
+                mr: 5,
+            }}
+        >
+            <CardMedia
+                component="img"
+                height="200"
+                image={e.image}
+                alt="car"
+            />
+            <CardContent>
+                <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="flex-start"
+                >
+                    <Stack
+                        direction="column"
+                        justifyContent="flex-start"
+                        alignItems="flex-start"
+                    >
+                        <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
+                            Car brand
+                        </Typography>
+                        <Typography sx={{ fontSize: "14px" }}>{e.Brand}</Typography>
+                    </Stack>
 
-    const inputCarlicense = (event) => {
-        setCarLicense(event.target.value);
-        // console.log(event.target.value);
-    };
+                    <Stack
+                        direction="column"
+                        justifyContent="flex-start"
+                        alignItems="flex-start"
+                    >
+                        <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
+                            Car model
+                        </Typography>
+                        <Typography sx={{ fontSize: "14px" }}>
+                            {e.Model}
+                        </Typography>
+                    </Stack>
+                    <Stack
+                        direction="column"
+                        justifyContent="flex-start"
+                        alignItems="flex-start"
+                    >
+                        <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
+                            Car color
+                        </Typography>
+                        <Typography sx={{ fontSize: "14px" }}>
+                            {e.Color}
+                        </Typography>
+                    </Stack>
+                    <Stack
+                        direction="column"
+                        justifyContent="flex-start"
+                        alignItems="flex-start"
+                    >
+                        <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
+                            License plate number
+                        </Typography>
+                        <Typography sx={{ fontSize: "14px" }}>{e.Plate}</Typography>
+                    </Stack>
+                </Stack>
 
+                <Divider sx={{ mb: 2, mt: 2 }} />
+                <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                >
+                    <Typography sx={{ fontSize: "14px" }}>
+                        Lastest Update: {date}
+                    </Typography>
+                    <EditButton onClick={() => handleOpenEdit(e.id)}>Edit</EditButton>
+                </Stack>
+            </CardContent>
+        </Card>
+    ));
 
-    const addcar = async () => {
-        console.log(carbrand, carcolor, carmodel, carlicense);
-        if (carbrand != "" && carcolor != "" && carmodel != "" && carlicense != "") {
+    //=================Add Car ==============================
+    const Addcar = async () => {
+        let newCars = [...cars];
+        {
+            imageURLs.map((imageSrc) => (
+                <img src={imageSrc} />
+            ))
+        }
+        const item = { image: imageURLs, Brand: inputs.CarBrand, Model: inputs.CarModel, Color: inputs.CarColor, Plate: inputs.CarPlate, id: newCars.length + 100 };
+
+        console.log(item.image[0]);
+
+        if (imageURLs.length == 0 || inputs.CarBrand == null || inputs.CarModel == null || inputs.CarColor == null || inputs.CarPlate == null) {
+            swal({
+                title: "Fail!",
+                text: "Please sign the info!",
+                icon: "error",
+                dangerMode: true,
+            })
+        }
+        else {
+
+            // const body = new FormData();
+            // body.append("file", images[0]);
+            // const responseImage = await fetch("http://localhost:3000/api/addImageCar", {
+            //     method: "POST",
+            //     body
+            // });
+
+            // console.log(item.image[0]);
 
             try {
+
                 let headersList = {
                     "Accept": "*/*",
                     "Content-Type": "application/json"
@@ -181,10 +261,11 @@ export default function carRegister() {
 
                 let bodyContent = JSON.stringify({
                     "userid": 6,
-                    "carbrand": carbrand,
-                    "carcolor": carcolor,
-                    "carmodel": carmodel,
-                    "carlicense": carlicense,
+                    "carimage": item.image,
+                    "carbrand": item.Brand,
+                    "carcolor": item.Color,
+                    "carmodel": item.Model,
+                    "carlicense": item.Plate,
                 });
 
                 let response = await fetch("http://localhost:3000/api/addCar", {
@@ -194,24 +275,92 @@ export default function carRegister() {
                 });
 
                 if (response.ok) {
-                    let data = await response.text();
-                    // setuInfo(true);
-                    console.log(data);
-                    handleCloseAddCar();
+                    // console.log(response);
+
+                    // const body = new FormData();
+                    // body.append("file", images[0]);
+                    // const responseImage = await fetch("http://localhost:3000/api/addImageCar", {
+                    //     method: "POST",
+                    //     body
+                    // });
+
+                    swal({
+                        title: "Success!",
+                        text: "Add success!",
+                        icon: "success",
+                        dangerMode: true,
+                    })
+
+                    newCars.push(item);
+                    setCars(newCars);
+                    setOpenAddCar(false);
+                    //Clear Text    
+                    setInputs({});
+                    setImageURLs([]);
+                    // let data = await response.json();
+                    // setDatacar(data);
+                    // console.log(data);
                 } else {
-                    throw Error("Login Error");
+                    throw Error("fetch offer Error");
                 }
 
             } catch (error) {
                 console.error(error.message);
+                //     res.status(500).send(error.message);
             }
+
         }
+        // console.log(imageURLs.length);
+    }
+
+    //================= Edit Car ==============================
+    const EditCar = () => {
+        //console.log(editID);
+        swal({
+            title: "Are you sure?",
+            text: "Are you sure that you want to edit?",
+            icon: "warning",
+            dangerMode: true,
+        })
+            .then(willDelete => {
+                if (willDelete) {
+                    swal("Edited!", "Edit success!", "success");
+                    const editCar = cars.map((cars) => {
+
+                        if (cars.id === editID) {
+                            return {
+                                ...cars, image: imageURLs, Band: inputs.CarBandEdit, Model: inputs.CarModelEdit, Color: inputs.CarColorEdit, Plate: inputs.CarPlateEdit
+                            }
+                        }
+                        return cars;
+                    })
+                    setCars(editCar)
+                    setOpenEdit(false);
+                    //Clear Text 
+                    setInputs({});
+                }
+            });
+    }
+
+
+    //modal Add Car 
+    const [openAddCar, setOpenAddCar] = React.useState(false);
+
+    const handleOpenAddCar = () => {
+        setOpenAddCar(true);
+    };
+    const handleCloseAddCar = () => {
+        setOpenAddCar(false);
+        setInputs({});
+        setImageURLs([]);
     };
 
     //modal Edit
     const [openEdit, setOpenEdit] = React.useState(false);
-    const handleOpenEdit = () => {
+    const handleOpenEdit = (id) => {
         setOpenEdit(true);
+        setEditID(id);
+        //console.log(id);
     };
     const handleCloseEdit = () => {
         setOpenEdit(false);
@@ -242,93 +391,7 @@ export default function carRegister() {
             </AddCarButton>
 
             {/* Media Card */}
-
-            {
-                datacar == null ? <></> : datacar.map((item, index) => {
-                    return <Card
-                        key={index}
-                        sx={{
-                            maxWidth: 1038,
-                            mt: 4,
-                            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
-                            borderRadius: "15px",
-                            mr: 5,
-                        }}
-                    >
-                        <CardMedia
-                            component="img"
-                            height="200"
-                            image="/assets/headweb.png"
-                            alt="car1"
-                        />
-                        <CardContent>
-                            <Stack
-                                direction="row"
-                                justifyContent="space-between"
-                                alignItems="flex-start"
-                            >
-                                <Stack
-                                    direction="column"
-                                    justifyContent="flex-start"
-                                    alignItems="flex-start"
-                                >
-                                    <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
-                                        Car brand
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "14px" }}>{item.car_brand}</Typography>
-                                </Stack>
-
-                                <Stack
-                                    direction="column"
-                                    justifyContent="flex-start"
-                                    alignItems="flex-start"
-                                >
-                                    <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
-                                        Car model
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "14px" }}>
-                                        {item.car_model}
-                                    </Typography>
-                                </Stack>
-                                <Stack
-                                    direction="column"
-                                    justifyContent="flex-start"
-                                    alignItems="flex-start"
-                                >
-                                    <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
-                                        Car color
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "14px" }}>
-                                        {item.car_color}
-                                    </Typography>
-                                </Stack>
-                                <Stack
-                                    direction="column"
-                                    justifyContent="flex-start"
-                                    alignItems="flex-start"
-                                >
-                                    <Typography sx={{ fontSize: "16px", mt: 1, fontWeight: "bold" }}>
-                                        License plate number
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "14px" }}>{item.car_license}</Typography>
-                                </Stack>
-                            </Stack>
-
-                            <Divider sx={{ mb: 2, mt: 2 }} />
-                            <Stack
-                                direction="row"
-                                justifyContent="space-between"
-                                alignItems="center"
-                            >
-                                <Typography sx={{ fontSize: "14px" }}>
-                                    {item.car_update_date}
-                                </Typography>
-                                <EditButton onClick={handleOpenEdit}>Edit</EditButton>
-                            </Stack>
-                        </CardContent>
-                    </Card>
-                })
-            }
+            {listCard}
 
             {/* Modal Edit */}
             <Modal
@@ -346,26 +409,6 @@ export default function carRegister() {
                             Edit
                         </h2>
                         <Divider />
-
-                        {/* <TextField
-                            id="standard-email-input"
-                            label="Email"
-                            variant="standard"
-                            //onChange={changeEmail}
-                            //value={email}
-                            placeholderText={"example@sample.com"}
-                            sx={{ mt: "10px", mb: "5px" }}
-                        />
-
-                        <TextField
-                            id="standard-password-input"
-                            label="Password"
-                            variant="standard"
-                            //onChange={changePassword}
-                            //value={password}
-                            placeholderText={"******"}
-                            sx={{ mt: "10px", mb: "25px" }}
-                        /> */}
                         <Stack
                             direction="row"
                             justifyContent="space-between"
@@ -380,25 +423,39 @@ export default function carRegister() {
                                     id="standard-email-input"
                                     label="Car brand"
                                     variant="standard"
-                                    // onChange={inputCarbrand}
-                                    // value={carbrand}
-
+                                    onChange={handleChange}
+                                    name="CarBandEdit"
+                                    value={inputs.CarBandEdit}
                                     sx={{ mt: "10px" }}
                                 />
                                 <TextField
                                     id="standard-email-input"
                                     label="Car color"
                                     variant="standard"
-                                    //onChange={changeEmail}
-                                    //value={email}
-
+                                    onChange={handleChange}
+                                    name="CarColorEdit"
+                                    value={inputs.CarColorEdit}
                                     sx={{ mt: 3, }}
 
                                 />
-                                <Typography sx={{ fontSize: "16px", mt: 6, fontWeight: "bold" }}>
+                                <Typography sx={{ fontSize: "16px", mt: 6, mb: 3, fontWeight: "bold" }}>
                                     Add Car Image
                                 </Typography>
-                                <AddImageButton sx={{ mt: 3 }}>Upload Image</AddImageButton>
+                                <input type="file" multiple accept="image/*" onChange={onImageChange} />
+                                {/* <Button
+                                    variant="outlined"
+                                    sx={{
+                                        borderColor: "#8F8F8F",
+                                        color: "#8F8F8F",
+                                        height: "30px",
+                                        fontSize: "12px",
+                                        padding: "16",
+                                        mt: 2,
+                                    }}
+                                >
+                                    
+                                    Upload Image
+                                </Button> */}
 
                             </Stack>
                             <Stack
@@ -410,17 +467,18 @@ export default function carRegister() {
                                     id="standard-email-input"
                                     label="Car model"
                                     variant="standard"
-                                    //onChange={changeEmail}
-                                    //value={email}
-
+                                    onChange={handleChange}
+                                    name="CarModelEdit"
+                                    value={inputs.CarModelEdit}
                                     sx={{ mt: "10px" }}
                                 />
                                 <TextField
                                     id="standard-email-input"
                                     label="License plate number"
                                     variant="standard"
-                                    //onChange={changeEmail}
-                                    //value={email}
+                                    onChange={handleChange}
+                                    name="CarPlateEdit"
+                                    value={inputs.CarPlateEdit}
                                     sx={{ mt: 3 }}
                                 />
                             </Stack>
@@ -454,7 +512,7 @@ export default function carRegister() {
                                     height: "50px",
                                     mr: 1,
                                 }}
-                            //onClick={handleCloseAddCar}
+                                onClick={EditCar}
                             >
                                 Submit
                             </Button>
@@ -479,26 +537,6 @@ export default function carRegister() {
                             Add Car
                         </h2>
                         <Divider />
-
-                        {/* <TextField
-                            id="standard-email-input"
-                            label="Email"
-                            variant="standard"
-                            //onChange={changeEmail}
-                            //value={email}
-                            placeholderText={"example@sample.com"}
-                            sx={{ mt: "10px", mb: "5px" }}
-                        />
-
-                        <TextField
-                            id="standard-password-input"
-                            label="Password"
-                            variant="standard"
-                            //onChange={changePassword}
-                            //value={password}
-                            placeholderText={"******"}
-                            sx={{ mt: "10px", mb: "25px" }}
-                        /> */}
                         <Stack
                             direction="row"
                             justifyContent="space-between"
@@ -513,25 +551,40 @@ export default function carRegister() {
                                     id="standard-email-input"
                                     label="Car brand"
                                     variant="standard"
-                                    onChange={inputCarbrand}
-                                    value={carbrand}
-
+                                    onChange={handleChange}
+                                    name="CarBrand"
+                                    value={inputs.CarBrand}
                                     sx={{ mt: "10px" }}
                                 />
                                 <TextField
                                     id="standard-email-input"
                                     label="Car color"
                                     variant="standard"
-                                    onChange={inputCarcolor}
-                                    value={carcolor}
-
-                                    sx={{ mt: 3, }}
+                                    onChange={handleChange}
+                                    name="CarColor"
+                                    value={inputs.CarColor}
+                                    sx={{ mt: 3 }}
 
                                 />
-                                <Typography sx={{ fontSize: "16px", mt: 6, fontWeight: "bold" }}>
+                                <Typography sx={{ fontSize: "16px", mt: 6, mb: 3, fontWeight: "bold" }}>
                                     Add Car Image
                                 </Typography>
-                                <AddImageButton sx={{ mt: 3 }}>Upload Image</AddImageButton>
+                                <input type="file" multiple accept="image/*" onChange={onImageChange} />
+                                {/* <Button
+                                
+                                    variant="outlined"
+                                    sx={{
+                                        borderColor: "#8F8F8F",
+                                        color: "#8F8F8F",
+                                        height: "30px",
+                                        fontSize: "12px",
+                                        padding: "16",
+                                        mt: 2,
+                                    }}
+                                    
+                                >
+                                    Upload Image
+                                </Button> */}
 
                             </Stack>
                             <Stack
@@ -543,17 +596,18 @@ export default function carRegister() {
                                     id="standard-email-input"
                                     label="Car model"
                                     variant="standard"
-                                    onChange={inputCarmodel}
-                                    value={carmodel}
-
+                                    onChange={handleChange}
+                                    name="CarModel"
+                                    value={inputs.CarModel}
                                     sx={{ mt: "10px" }}
                                 />
                                 <TextField
                                     id="standard-email-input"
                                     label="License plate number"
                                     variant="standard"
-                                    onChange={inputCarlicense}
-                                    value={carlicense}
+                                    onChange={handleChange}
+                                    name="CarPlate"
+                                    value={inputs.CarPlate}
                                     sx={{ mt: 3 }}
                                 />
                             </Stack>
@@ -587,7 +641,7 @@ export default function carRegister() {
                                     height: "50px",
                                     mr: 1,
                                 }}
-                                onClick={addcar}
+                                onClick={Addcar}
                             >
                                 Submit
                             </Button>

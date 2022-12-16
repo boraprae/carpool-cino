@@ -9,9 +9,11 @@ export default async function handler(req, res) {
         const carcolor = req.body.carcolor;
         const carmodel = req.body.carmodel;
         const carlicense = req.body.carlicense;
-        // const image = req.body.image;
+        const image = req.body.carimage;
 
-        // console.log(carbrand, carcolor, carmodel, carlicense);
+        console.log(image[0].blob , carbrand, carcolor, carmodel, carlicense);
+
+        // return res.send("ok");
 
         try {
             // query user info from DB
@@ -37,5 +39,6 @@ export default async function handler(req, res) {
             res.status(500).send(error.message);
         }
     }
+    // res.send("test");
     res.status(400).send("Method not allowed");
 }

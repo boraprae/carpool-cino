@@ -17,7 +17,8 @@ export default async function handler(req, res) {
             const sql = "INSERT INTO offer(offer_date , offer_time , offer_origin , offer_destination , offer_seat , offer_price , offer_description  , offer_car ) VALUES (?,?,?,?,?,?,?,?)";
             const result = await pool.query(sql, [date, time, origin, destination, seat, price, description, carid]);
 
-            
+            return res.send();
+
         } catch (error) {
             console.error(error.message);
             res.status(500).send(error.message);
